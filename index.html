@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>つながるEC — 事業計画</title>
+<style>
+  :root {
+    --bg: #FFF8F0;
+    --ink: #2B2420;
+    --ink-soft: #5C5148;
+    --mikan: #F5923E;
+    --mikan-deep: #D9761F;
+    --leaf: #5A8F47;
+    --cream: #FFE6CC;
+    --line: #E8DDD0;
+    --card: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--ink);
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  .stage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .slide {
+    width: min(1280px, 96vw);
+    aspect-ratio: 16 / 9;
+    max-height: 92vh;
+    background: var(--bg);
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    padding: 48px 64px;
+    display: none;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide.active { display: flex; }
+
+  .slide::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--mikan) 0%, var(--mikan-deep) 60%, var(--leaf) 100%);
+  }
+
+  .page-num {
+    position: absolute;
+    bottom: 20px;
+    right: 32px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+
+  .brand {
+    position: absolute;
+    bottom: 20px;
+    left: 32px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+
+  h1 {
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    position: relative;
+    padding-left: 18px;
+  }
+  h2::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 6px;
+    background: var(--mikan);
+    border-radius: 3px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  p, li { font-size: 16px; line-height: 1.7; color: var(--ink-soft); }
+
+  /* ========== Slide 1: Title ========== */
+  .s1-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .s1-kicker {
+    font-size: 16px;
+    color: var(--mikan-deep);
+    letter-spacing: 0.3em;
+    margin-bottom: 16px;
+  }
+
+  .s1-title {
+    font-size: 92px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .s1-title .accent { color: var(--mikan-deep); }
+
+  .s1-sub {
+    font-size: 22px;
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+  }
+
+  .s1-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .s1-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px 22px;
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--mikan);
+  }
+
+  .s1-card:nth-child(2) { border-top-color: var(--mikan-deep); }
+  .s1-card:nth-child(3) { border-top-color: var(--leaf); }
+
+  .s1-card-label {
+    font-size: 12px;
+    color: var(--mikan-deep);
+    letter-spacing: 0.2em;
+    margin-bottom: 10px;
+  }
+  .s1-card:nth-child(3) .s1-card-label { color: var(--leaf); }
+
+  .s1-card h3 { font-size: 22px; margin-bottom: 8px; }
+  .s1-card p { font-size: 14px; }
+
+  /* ========== Slide 2: Overview ========== */
+  .s2-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .s2-concept {
+    text-align: center;
+    padding: 16px 0 24px;
+    color: var(--ink-soft);
+    font-size: 16px;
+    letter-spacing: 0.15em;
+  }
+  .s2-concept strong { color: var(--mikan-deep); font-weight: 700; }
+
+  .s2-cols {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: stretch;
+    flex: 1;
+  }
+
+  .s2-col {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 28px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .s2-col-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .s2-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--cream);
+    color: var(--mikan-deep);
+    letter-spacing: 0.1em;
+  }
+  .s2-col.right .s2-badge { background: #E6F0DE; color: var(--leaf); }
+
+  .s2-col h3 { font-size: 26px; }
+
+  .s2-col p { font-size: 15px; margin-bottom: 10px; }
+
+  .s2-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 16px;
+  }
+  .s2-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: #FBEFE2;
+    color: var(--mikan-deep);
+  }
+  .s2-col.right .s2-tag { background: #EEF5E6; color: var(--leaf); }
+
+  .s2-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+  .s2-flow .arrow {
+    font-size: 28px;
+    color: var(--mikan);
+    line-height: 1;
+  }
+
+  /* ========== Slide 3: EC Consul ========== */
+  .s3-grid {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 28px;
+    flex: 1;
+  }
+
+  .s3-left { display: flex; flex-direction: column; }
+  .s3-lead {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .s3-lead p { font-size: 15px; }
+  .s3-lead .label {
+    font-size: 11px;
+    color: var(--mikan-deep);
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+  }
+
+  .s3-note {
+    font-size: 14px;
+    color: var(--ink-soft);
+    padding: 14px 16px;
+    border-left: 3px solid var(--leaf);
+    background: #F5FAF1;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .s3-diff {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .s3-item {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .s3-num {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--mikan);
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .s3-item h3 { font-size: 18px; margin-bottom: 4px; }
+  .s3-item p { font-size: 14px; }
+
+  /* ========== Slide 4: 自社EC ========== */
+  .s4-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    flex: 1;
+  }
+
+  .s4-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+
+  .s4-box .label {
+    font-size: 11px;
+    color: var(--leaf);
+    letter-spacing: 0.2em;
+    margin-bottom: 10px;
+  }
+  .s4-box h3 { margin-bottom: 12px; }
+  .s4-box p { font-size: 14px; margin-bottom: 10px; }
+
+  .s4-products { display: flex; flex-direction: column; gap: 14px; }
+
+  .s4-route {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .s4-route h3 { margin-bottom: 16px; }
+
+  .s4-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .s4-step {
+    background: #FBEFE2;
+    color: var(--mikan-deep);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .s4-step.done { background: var(--mikan); color: white; }
+  .s4-arrow { color: var(--ink-soft); font-size: 14px; }
+
+  .s4-caption {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .s4-story {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--mikan);
+    background: #FFF3E4;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+  }
+
+  /* ========== Slide 5: Schedule ========== */
+  .s5-body { display: flex; flex-direction: column; flex: 1; }
+
+  .s5-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 8px;
+    flex: 1;
+  }
+
+  .s5-table th, .s5-table td {
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  .s5-table thead th {
+    background: var(--ink);
+    color: white;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    text-align: center;
+  }
+  .s5-table thead th:first-child {
+    background: transparent;
+    border: none;
+  }
+
+  .s5-rowhead {
+    background: var(--cream);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+    width: 160px;
+    text-align: center;
+    vertical-align: middle;
+    letter-spacing: 0.1em;
+  }
+  .s5-rowhead.ai { background: #E6F0DE; color: var(--leaf); }
+
+  .s5-cell { background: var(--card); }
+
+  .s5-cell ul { list-style: none; }
+  .s5-cell li {
+    font-size: 13.5px;
+    color: var(--ink);
+    padding: 4px 0 4px 18px;
+    position: relative;
+    line-height: 1.6;
+  }
+  .s5-cell li::before {
+    content: "";
+    position: absolute;
+    left: 2px; top: 11px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--mikan);
+  }
+  .s5-cell .month {
+    color: var(--mikan-deep);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+
+  .s5-cell.ai li::before { background: var(--leaf); }
+  .s5-cell.ai .month { color: var(--leaf); }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
+    padding: 6px 10px;
+    border-radius: 999px;
+  }
+  .nav button {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    color: var(--ink);
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .nav button:hover { background: var(--cream); }
+  .nav .counter {
+    color: white;
+    font-size: 13px;
+    padding: 0 10px;
+    letter-spacing: 0.15em;
+  }
+
+  .hint {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- ========== Slide 1 ========== -->
+  <section class="slide active" id="s1">
+    <div class="s1-body">
+      <div class="s1-kicker">BUSINESS PLAN 2026 — 2027</div>
+      <h1 class="s1-title">つながる<span class="accent">EC</span></h1>
+      <div class="s1-sub">— 生産者と消費者を、リピートを、次の担当者を、つなぐ。</div>
+
+      <div class="s1-cards">
+        <div class="s1-card">
+          <div class="s1-card-label">CONNECT 01</div>
+          <h3>つくりて × 消費者</h3>
+          <p>商品の背景にある物語を届け、顔の見える買い物体験をつくる。</p>
+        </div>
+        <div class="s1-card">
+          <div class="s1-card-label">CONNECT 02</div>
+          <h3>リピートにつながる</h3>
+          <p>一度きりで終わらせない。愛される商品・店舗に育てる運用。</p>
+        </div>
+        <div class="s1-card">
+          <div class="s1-card-label">CONNECT 03</div>
+          <h3>担当者が育つ</h3>
+          <p>現場に次のEC責任者を残す。コーチングを伴走に織り込む。</p>
+        </div>
+      </div>
+    </div>
+    <div class="brand">つながるEC（屋号検討中）</div>
+    <div class="page-num">01 / 05</div>
+  </section>
+
+  <!-- ========== Slide 2 ========== -->
+  <section class="slide" id="s2">
+    <h2>事業の全体像</h2>
+    <div class="s2-body">
+      <div class="s2-concept">
+        2本の事業を、<strong>「つながる」</strong> という一本の軸が貫く。
+      </div>
+
+      <div class="s2-cols">
+        <div class="s2-col left">
+          <div class="s2-col-head">
+            <span class="s2-badge">BUSINESS 01</span>
+            <h3>ECコンサル</h3>
+          </div>
+          <p>食品・日用品・サプリなどリピート商材のEC運用支援。下請け＋直接営業で案件獲得。</p>
+          <p>食品 × Yahoo! を中心に、楽天・Amazon・Qoo10 もカバー。</p>
+          <div class="s2-tags">
+            <span class="s2-tag">食品特化</span>
+            <span class="s2-tag">Yahoo!知見</span>
+            <span class="s2-tag">AI型化</span>
+            <span class="s2-tag">コーチング</span>
+          </div>
+        </div>
+
+        <div class="s2-flow">
+          <div>知見</div>
+          <div class="arrow">⇄</div>
+          <div>実験の場</div>
+        </div>
+
+        <div class="s2-col right">
+          <div class="s2-col-head">
+            <span class="s2-badge">BUSINESS 02</span>
+            <h3>自社EC</h3>
+          </div>
+          <p>身内生産のみかん＋国内OEM（お茶漬けギフト等）をマルチモールで展開。</p>
+          <p>つくりてのストーリーを届けることで、商品を「愛される」段階まで育てる自社実験場。</p>
+          <div class="s2-tags">
+            <span class="s2-tag">みかん</span>
+            <span class="s2-tag">国内OEM</span>
+            <span class="s2-tag">ギフト</span>
+            <span class="s2-tag">マルチモール</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="brand">つながるEC</div>
+    <div class="page-num">02 / 05</div>
+  </section>
+
+  <!-- ========== Slide 3 ========== -->
+  <section class="slide" id="s3">
+    <h2>ECコンサル事業</h2>
+    <div class="s3-grid">
+      <div class="s3-left">
+        <div class="s3-lead">
+          <div class="label">WHAT WE DO</div>
+          <p>食品・日用品・サプリなど、<strong>リピート商材の EC 運用支援</strong>。Yahoo!・楽天・Amazon・Qoo10 を横断してカバー。</p>
+        </div>
+        <div class="s3-lead">
+          <div class="label">HOW WE WIN</div>
+          <p>大量に存在する EC コンサルの中で、「食品 × Yahoo!」の第一想起を取りに行く。長い食品経験と元Yahoo!マネジメントの知見を武器に。</p>
+        </div>
+        <div class="s3-note">
+          ゴールは運用代行ではなく、<strong>担当者が育ち現場が自走する状態</strong>をつくること。
+        </div>
+      </div>
+
+      <div class="s3-diff">
+        <div class="s3-item">
+          <div class="s3-num">01</div>
+          <div>
+            <h3>食品 × Yahoo! のポジショニング</h3>
+            <p>食品商材とYahoo!ショッピング攻略に、元Yahoo!の知見で深く踏み込む。</p>
+          </div>
+        </div>
+        <div class="s3-item">
+          <div class="s3-num">02</div>
+          <div>
+            <h3>AIで型化・内製ツール化</h3>
+            <p>レポート・分析・提案の型をAIで再現性高く。属人性を下げ、対応の幅を拡げる。</p>
+          </div>
+        </div>
+        <div class="s3-item">
+          <div class="s3-num">03</div>
+          <div>
+            <h3>コーチング × 主体性を引き出す</h3>
+            <p>運用担当者の意思決定力と主体性に伴走。「次のEC責任者」を現場に残す。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="brand">つながるEC</div>
+    <div class="page-num">03 / 05</div>
+  </section>
+
+  <!-- ========== Slide 4 ========== -->
+  <section class="slide" id="s4">
+    <h2>自社EC事業</h2>
+    <div class="s4-grid">
+      <div class="s4-products">
+        <div class="s4-box">
+          <div class="label">PRODUCT 01</div>
+          <h3>みかん（身内生産）</h3>
+          <p>家族・親族が手がける産地直送のみかん。つくりての顔が見える一次産品を軸に。</p>
+        </div>
+        <div class="s4-box">
+          <div class="label">PRODUCT 02</div>
+          <h3>国内OEM（お茶漬けギフト等）</h3>
+          <p>リサーチ中。お中元・お歳暮などギフト需要を狙ったギフトセットを想定。</p>
+        </div>
+      </div>
+
+      <div class="s4-box s4-route">
+        <div class="label">CHANNEL ROADMAP</div>
+        <h3>販路設計</h3>
+        <div class="s4-flow">
+          <span class="s4-step done">ファーマーズ</span>
+          <span class="s4-arrow">→</span>
+          <span class="s4-step done">BASE</span>
+          <span class="s4-arrow">→</span>
+          <span class="s4-step">Amazon</span>
+          <span class="s4-arrow">→</span>
+          <span class="s4-step">TikTok Shop</span>
+          <span class="s4-arrow">→</span>
+          <span class="s4-step">楽天</span>
+          <span class="s4-arrow">→</span>
+          <span class="s4-step">Yahoo!</span>
+        </div>
+        <div class="s4-caption">段階的に販路を拡張。各モールで自社の運用知見を実地で磨き、コンサル事業にも還流。</div>
+
+        <div class="s4-story">
+          <strong>つながるポイント</strong>：商品のストーリーをお客様に伝え、<strong>愛される商品・店舗</strong>に育てる。単なる販売チャネルではなく、つくりてと消費者の出会いの場として運営する。
+        </div>
+      </div>
+    </div>
+    <div class="brand">つながるEC</div>
+    <div class="page-num">04 / 05</div>
+  </section>
+
+  <!-- ========== Slide 5 ========== -->
+  <section class="slide" id="s5">
+    <h2>1年間の事業スケジュール（2026/4 — 2027/3）</h2>
+    <div class="s5-body">
+      <table class="s5-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>上半期（4月 — 9月）</th>
+            <th>下半期（10月 — 3月）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="s5-rowhead">ECコンサル</td>
+            <td class="s5-cell">
+              <ul>
+                <li><span class="month">4月</span>3社 確定</li>
+                <li><span class="month">5月</span>6社 確定（見込み含め 7〜8社）</li>
+                <li><span class="month">6月〜</span>10社で安定稼働へ</li>
+              </ul>
+            </td>
+            <td class="s5-cell">
+              <ul>
+                <li><span class="month">10月</span>Yahoo! / 楽天 / Amazon / Qoo10 の支援体制を整備</li>
+                <li><span class="month">11月</span>クライアントの半数を直接取引化／単価UP</li>
+                <li><span class="month">通期</span>10社安定稼働を継続</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="s5-rowhead">自社EC</td>
+            <td class="s5-cell">
+              <ul>
+                <li><span class="month">4月</span>OEM商品のリサーチ完了</li>
+                <li><span class="month">5月</span>仕入れ実行</li>
+                <li><span class="month">6月</span>OEM 1商品目 発売（お中元狙い）／Amazon展開開始</li>
+                <li><span class="month">8月</span>TikTok Shop 追加</li>
+              </ul>
+            </td>
+            <td class="s5-cell">
+              <ul>
+                <li><span class="month">10月</span>楽天 追加（みかんシーズン開始に合わせて）</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="s5-rowhead ai">AI型化（共通基盤）</td>
+            <td class="s5-cell ai">
+              <ul>
+                <li><span class="month">4-5月</span>レポート等 業務プロセスを型化</li>
+                <li><span class="month">6-9月</span>型化を継続拡張</li>
+              </ul>
+            </td>
+            <td class="s5-cell ai">
+              <ul>
+                <li><span class="month">10月〜</span>型化を元に内製ツール制作フェーズへ</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="brand">つながるEC</div>
+    <div class="page-num">05 / 05</div>
+  </section>
+
+</div>
+
+<div class="hint">← → / Space でスライド切替</div>
+
+<div class="nav">
+  <button id="prev" aria-label="前へ">←</button>
+  <span class="counter"><span id="cur">1</span> / <span id="total">5</span></span>
+  <button id="next" aria-label="次へ">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let idx = 0;
+
+  document.getElementById('total').textContent = total;
+
+  function show(i) {
+    idx = (i + total) % total;
+    slides.forEach((s, k) => s.classList.toggle('active', k === idx));
+    document.getElementById('cur').textContent = idx + 1;
+  }
+
+  document.getElementById('prev').addEventListener('click', () => show(idx - 1));
+  document.getElementById('next').addEventListener('click', () => show(idx + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      show(idx + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      show(idx - 1);
+    } else if (e.key === 'Home') {
+      show(0);
+    } else if (e.key === 'End') {
+      show(total - 1);
+    }
+  });
+</script>
+
+</body>
+</html>
