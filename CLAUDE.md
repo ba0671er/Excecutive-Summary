@@ -88,6 +88,9 @@
 - 全マニュアル: `guidelines/*.md`
 - 出力テンプレ: `templates/*.md`
 - 全エージェント定義: `agents/<dept>/*.md`
+- **ローデータの所在地図**: `knowledge/drive-map.md`
+  （画像・動画・CSV等の生データはGoogle Drive "AI Company" に格納。
+  必要なときだけ Drive MCP で取得する）
 
 司令塔はマニュアル本文を自分で読み込まない。
 **マニュアルは各専門エージェントが、自分の担当領域だけを読む。**
